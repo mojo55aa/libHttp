@@ -7,7 +7,7 @@
 #include <typeinfo>
 using namespace std;
 
-#define DEFAULT_BUFF_SIZE 0x7ffff	//512KB
+#define DEFAULT_BUFF_SIZE 0x80000	//512KB
 
 
 CPPRequests::CPPRequests()

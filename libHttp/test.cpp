@@ -6,6 +6,7 @@
 #include "lib_socket.h"
 #include "CPPRequests.h"
 #include "HTTPSession.h"
+#include "MemoryAutoAdapter.h"
 using namespace std;
 
 #define MAX_RECV_BUFF 0x7ffff	//512KB
@@ -64,10 +65,31 @@ void test_session()
 	httpResponse->SaveFile("C:\\Users\\MOJO\\Desktop\\res_str.html");
 }
 
+
+void test_memory_manager()
+{
+	string url = "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=tcp%20400%20The%20plain%20HTTP%20request%20was%20sent%20to%20HTTPS%20port&oq=400%2520The%2520plain%2520HTTP%2520request%2520was%2520sent%2520to%2520HTTPS%2520port&rsv_pq=c47a22cc000343ec&rsv_t=f9878krFzFCXmkwZfpD6n4rU6fRpd0e%2FQeiIGdY1RC0wOJy18QsI7BUFUwc&rqlang=cn&rsv_enter=1&inputT=3077&rsv_sug3=28&rsv_sug2=0&rsv_sug4=3971";
+
+	MemoryAutoAdapter* memoryManager = new MemoryAutoAdapter();
+	cout << memoryManager->setPageSize(100) << endl;
+	memoryManager->write(url.c_str(), url.size());
+	unsigned int buff_size = memoryManager->size();
+	char* buff = new char[buff_size]();
+	memoryManager->read(buff, 10);
+	string s(buff, 10);
+	if (url == s)
+	{
+		cout << "=" << endl;
+	}
+	memoryManager->append(url.c_str(), url.size());
+	return;
+}
+
 int main()
 {
 	// test_requests();
-	test_session();
+	// test_session();
+	test_memory_manager();
 
 	system("pause");
 }
